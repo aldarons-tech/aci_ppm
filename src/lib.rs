@@ -6,16 +6,19 @@
 
 #![no_std]
 
-pub enum ErrPPM {
+/// The errors that can be returned if `decode()` fails.
+pub enum DecodeErrorPPM {
+	/// Not a PPM file (bad header)
 	NotPPM,
+	/// Dimensions are not numbers
 	BadNum,
 }
 
-impl ::core::fmt::Debug for ErrPPM {
+impl ::core::fmt::Debug for DecodeErrorPPM {
 	fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
 		write!(f, "Couldn't parse PPM because: {}", match *self {
-			ErrPPM::NotPPM => "Not a PPM file (bad header)",
-			ErrPPM::BadNum => "Dimensions are not numbers",
+			DecodeErrorPPM::NotPPM => "Not a PPM file (bad header)",
+			DecodeErrorPPM::BadNum => "Dimensions are not numbers",
 		})
 	}
 }
@@ -28,7 +31,7 @@ fn skip_line(ppm: &'static [u8], index: &mut usize) {
 }
 
 fn utf8_to_u32(ppm: &'static [u8], index: &mut usize, until: u8)
-	-> Result<u32, ErrPPM>
+	-> Result<u32, DecodeErrorPPM>
 {
 	let zero = b'0';
 	let mut number = 0;
@@ -39,7 +42,7 @@ fn utf8_to_u32(ppm: &'static [u8], index: &mut usize, until: u8)
 		number *= 10;
 		if digit != zero {
 			if digit < zero || digit > zero + 9 {
-				return Err(ErrPPM::BadNum);
+				return Err(DecodeErrorPPM::BadNum);
 			}
 			number += (digit - zero) as u32;
 		}
@@ -49,17 +52,16 @@ fn utf8_to_u32(ppm: &'static [u8], index: &mut usize, until: u8)
 	Ok(number)
 }
 
-/// Decode PPM data.
-/// 
-/// Returns `(width, height, pixels)`
+/// Decode PPM data.  On success, returns image as tuple:
+/// `(width, height, pixels)`
 pub fn decode(ppm: &'static [u8])
-	-> Result<(u32, u32, &'static [u8]), ErrPPM>
+	-> Result<(u32, u32, &'static [u8]), DecodeErrorPPM>
 {
 	let mut index = 3;
 
 	// Header
 	if ppm[0] != b'P' || ppm[1] != b'6' {
-		return Err(ErrPPM::NotPPM);
+		return Err(DecodeErrorPPM::NotPPM);
 	}
 
 	// Optional Comment
