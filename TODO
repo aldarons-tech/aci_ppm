@@ -1,5 +1,0 @@
-0.2.0
-	* Add encoding
-
-1.0.0
-	* Standardize with rest of aci crates ( most likely Vec's for pixels )
