@@ -16,32 +16,17 @@
 extern crate afi;
 extern crate ami;
 
-/// The errors that can be returned if `decode()` fails.
-pub enum DecodeErrorPPM {
-	/// Not a PPM file (bad header)
-	NotPPM,
-	/// Dimensions are not numbers
-	BadNum,
-}
+pub use afi::GraphicDecodeErr;
 
-impl ::core::fmt::Debug for DecodeErrorPPM {
-	fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-		write!(f, "Couldn't parse PPM because: {}", match *self {
-			DecodeErrorPPM::NotPPM => "Not a PPM file (bad header)",
-			DecodeErrorPPM::BadNum => "Dimensions are not numbers",
-		})
-	}
-}
-
-fn skip_line(ppm: &'static [u8], index: &mut usize) {
+fn skip_line(ppm: &[u8], index: &mut usize) {
 	while ppm[*index] != b'\n' {
 		*index += 1;
 	}
 	*index += 1;
 }
 
-fn utf8_to_u32(ppm: &'static [u8], index: &mut usize, until: u8)
-	-> Result<u32, DecodeErrorPPM>
+fn utf8_to_u32(ppm: &[u8], index: &mut usize, until: u8)
+	-> Result<u32, GraphicDecodeErr>
 {
 	let zero = b'0';
 	let mut number = 0;
@@ -52,7 +37,7 @@ fn utf8_to_u32(ppm: &'static [u8], index: &mut usize, until: u8)
 		number *= 10;
 		if digit != zero {
 			if digit < zero || digit > zero + 9 {
-				return Err(DecodeErrorPPM::BadNum);
+				return Err(GraphicDecodeErr::BadNum);
 			}
 			number += (digit - zero) as u32;
 		}
@@ -63,12 +48,12 @@ fn utf8_to_u32(ppm: &'static [u8], index: &mut usize, until: u8)
 }
 
 /// Decode PPM data.  On success, returns image as a `Graphic`.
-pub fn decode(ppm: &'static [u8]) -> Result<afi::Graphic, DecodeErrorPPM> {
+pub fn decode(ppm: &[u8]) -> Result<afi::Graphic, GraphicDecodeErr> {
 	let mut index = 3;
 
 	// Header
 	if ppm[0] != b'P' || ppm[1] != b'6' {
-		return Err(DecodeErrorPPM::NotPPM);
+		return Err(GraphicDecodeErr::IncorrectFormat);
 	}
 
 	// Optional Comment
@@ -96,10 +81,10 @@ pub fn decode(ppm: &'static [u8]) -> Result<afi::Graphic, DecodeErrorPPM> {
 		let mut pixel : [u8;4] = [0xFF, 0xFF, 0xFF, 0xFF];
 
 		for i in 0..size {
-			pixel[0] = buf[i * 4 + 0];
-			pixel[1] = buf[i * 4 + 1];
-			pixel[2] = buf[i * 4 + 2];
-			pixel[3] = buf[i * 4 + 3];
+			pixel[0] = buf[i * 3 + 0];
+			pixel[1] = buf[i * 3 + 1];
+			pixel[2] = buf[i * 3 + 2];
+			pixel[3] = 255;
 
 			out.push(unsafe {::core::mem::transmute(pixel)});
 		}
