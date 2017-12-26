@@ -16,7 +16,8 @@
 extern crate afi;
 extern crate ami;
 
-pub use afi::GraphicDecodeErr;
+use afi::GraphicBuilder;
+pub use afi::{ Graphic, GraphicDecodeErr };
 
 fn skip_line(ppm: &[u8], index: &mut usize) {
 	while ppm[*index] != b'\n' {
@@ -48,7 +49,7 @@ fn utf8_to_u32(ppm: &[u8], index: &mut usize, until: u8)
 }
 
 /// Decode PPM data.  On success, returns image as a `Graphic`.
-pub fn decode(ppm: &[u8]) -> Result<afi::Graphic, GraphicDecodeErr> {
+pub fn decode(ppm: &[u8]) -> Result<Graphic, GraphicDecodeErr> {
 	let mut index = 3;
 
 	// Header
@@ -69,9 +70,6 @@ pub fn decode(ppm: &[u8]) -> Result<afi::Graphic, GraphicDecodeErr> {
 	let size = (width * height) as usize;
 	let mut out : ami::Vec<u32> = ami::Vec::with_capacity(size + 2);
 
-	out.push(width);
-	out.push(height);
-
 	// We don't care about this.  In ppm format 255 is normally here
 	skip_line(ppm, &mut index);
 
@@ -89,7 +87,7 @@ pub fn decode(ppm: &[u8]) -> Result<afi::Graphic, GraphicDecodeErr> {
 			out.push(unsafe {::core::mem::transmute(pixel)});
 		}
 
-		afi::GraphicBuilder::new().rgba(out)
+		GraphicBuilder::new().rgba(width, height, out)
 	};
 
 	Ok(graphic)
