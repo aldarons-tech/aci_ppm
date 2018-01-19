@@ -35,7 +35,7 @@ description = """
     for decoding ppm image files.
 """
 keywords = [ "Image", "PPM", "Codec", "Parse" ]
-categories = [ "no-std", "data-structures", "encoding", "parsing",
+categories = [ "data-structures", "encoding", "parsing",
 	"parser-implementations"]
 
 ################################################################################
@@ -49,6 +49,5 @@ exclude = [
 
 [dependencies]
 afi = "^0.3.1"
-ami = "^0.5"
 
 ################################################################################

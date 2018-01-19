@@ -7,14 +7,12 @@
 //! Aldaron's Codec Interface / PPM is a small library developed by Plop Grizzly
 //! for decoding ppm image files.
 
-#![no_std]
 #![warn(missing_docs)]
 #![doc(html_logo_url = "http://plopgrizzly.com/icon.png",
 	html_favicon_url = "http://plopgrizzly.com/icon.png",
 	html_root_url = "http://plopgrizzly.com/aci_png/")]
 
 extern crate afi;
-extern crate ami;
 
 use afi::GraphicBuilder;
 pub use afi::{ Graphic, GraphicDecodeErr };
@@ -68,7 +66,7 @@ pub fn decode(ppm: &[u8]) -> Result<Graphic, GraphicDecodeErr> {
 
 	// Allocate RGBA data.
 	let size = (width * height) as usize;
-	let mut out : ami::Vec<u32> = ami::Vec::with_capacity(size + 2);
+	let mut out: Vec<u32> = Vec::with_capacity(size + 2);
 
 	// We don't care about this.  In ppm format 255 is normally here
 	skip_line(ppm, &mut index);
@@ -84,7 +82,7 @@ pub fn decode(ppm: &[u8]) -> Result<Graphic, GraphicDecodeErr> {
 			pixel[2] = buf[i * 3 + 2];
 			pixel[3] = 255;
 
-			out.push(unsafe {::core::mem::transmute(pixel)});
+			out.push(unsafe { ::std::mem::transmute(pixel) });
 		}
 
 		GraphicBuilder::new().rgba(width, height, out)

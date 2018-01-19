@@ -14,4 +14,4 @@ parsing ppm image files.
 * Encode and decode compressed ppm files.
 
 ## Support
-**aci_ppm** should work on all platforms (with or without libc).
+**aci_ppm** should work on all platforms.
