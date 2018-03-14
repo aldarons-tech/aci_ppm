@@ -1,11 +1,9 @@
-// Aldaron's Codec Interface / PPM
-// Copyright (c) 2017 Plop Grizzly, Jeron Lau <jeron.lau@plopgrizzly.com>
+// lib.rs -- Aldaron's Codec Interface / PPM
+// Copyright (c) 2017-2018  Jeron A. Lau <jeron.lau@plopgrizzly.com>
 // Licensed under the MIT LICENSE
-//
-// src/lib.rs
 
 //! Aldaron's Codec Interface / PPM is a small library developed by Plop Grizzly
-//! for decoding ppm image files.
+//! to encode(TODO) and decode ppm image files.
 
 #![warn(missing_docs)]
 #![doc(html_logo_url = "http://plopgrizzly.com/icon.png",
