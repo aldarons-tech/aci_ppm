@@ -1,4 +1,4 @@
-# Aldaron's Codec Interface / PPM 0.4.2
+# Aldaron's Codec Interface / PPM 0.5
 [Aldaron's Codec Interface / PPM](http://plopgrizzly.com/aci_ppm) is a library
 developed by [Plop Grizzly](http://plopgrizzly.com).  It encodes(TODO) and
 decodes ppm image files.

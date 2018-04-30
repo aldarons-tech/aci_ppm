@@ -11,7 +11,9 @@
 	html_root_url = "http://plopgrizzly.com/aci_png/")]
 
 extern crate afi;
+extern crate byteorder;
 
+use byteorder::ReadBytesExt;
 use afi::GraphicBuilder;
 pub use afi::{ Graphic, GraphicDecodeErr };
 
@@ -72,15 +74,13 @@ pub fn decode(ppm: &[u8]) -> Result<Graphic, GraphicDecodeErr> {
 	// Build Graphic
 	let graphic = {
 		let buf = &ppm[index..];
-		let mut pixel : [u8;4] = [0xFF, 0xFF, 0xFF, 0xFF];
 
 		for i in 0..size {
-			pixel[0] = buf[i * 3 + 0];
-			pixel[1] = buf[i * 3 + 1];
-			pixel[2] = buf[i * 3 + 2];
-			pixel[3] = 255;
-
-			out.push(unsafe { ::std::mem::transmute(pixel) });
+			out.push(std::io::Cursor::new([buf[i * 3 + 0],
+					buf[i * 3 + 1], buf[i * 3 + 2], 255u8])
+				.read_u32::<byteorder::LittleEndian>()
+				.unwrap()
+			);
 		}
 
 		GraphicBuilder::new().rgba(width, height, out)
