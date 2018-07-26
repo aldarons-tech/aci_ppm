@@ -1,23 +1,20 @@
-# Aldaron's Codec Interface / PPM 0.5
-[Aldaron's Codec Interface / PPM](http://plopgrizzly.com/aci_ppm) is a library
-developed by [Plop Grizzly](http://plopgrizzly.com).  It encodes(TODO) and
-decodes ppm image files.
-
-[Cargo](https://crates.io/crates/aci_ppm) /
-[Documentation](https://docs.rs/aci_ppm)
+# [Aldaron's Codec Interface / PPM](https://crates.io/crates/aci_ppm)
+Encode and decode PNM image files (TODO: so far only PPM).
 
 ## Features
-**aci_ppm**'s current features:
-* Decode ppm image files
+* Decode ppm image files.
+* Encode ppm image files.
+* Encoding & decoding is integrated with afi crate.
 
-**aci_ppm**'s planned features:
-* Encode ppm image files
-* Encode and decode compressed ppm files.
+## [Contributing](http://plopgrizzly.com/contributing/en#contributing)
 
-## Support
-**aci_ppm** works on all platforms with rust's std library.
+## Roadmap to 1.0 (Future Features)
+* Support all PNM variants like PGM etc.
+* Add support for PNM files with multiple frames.
+* Multithreaded png loading to load a bunch of files at once.
 
-# Contributing
-If you'd like to help implement functions for unsupported platforms, fix bugs,
-improve the API or improve the Documentation, then contact me at
-jeron.lau@plopgrizzly.com. I'll appreciate any help.
+## Change Log
+### 0.7
+* Now uses afi 0.7 for API template.
+
+## Developed by [Plop Grizzly](http://plopgrizzly.com)

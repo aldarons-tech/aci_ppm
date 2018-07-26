@@ -1,6 +1,4 @@
-# Cargo.toml -- Aldaron's Codec Interface / PPM
-# Copyright (c) 2017-2018  Jeron A. Lau <jeron.lau@plopgrizzly.com>
-# Licensed under the MIT LICENSE
+# "aci_ppm" - Aldaron's Codec Interface / PPM
 #                             _        _
 #                            /@\——————/@\
 # .———  .                   |   o    o   |     .————      .            .
@@ -11,29 +9,29 @@
 # |     |   ———   |       |                |    ————  |   | :——— :———  |   |
 #                 |        \              /                              __/
 #                           ¯————————————¯
+#
+# Copyright Jeron A. Lau 2017-2018.
+# Distributed under the Boost Software License, Version 1.0.  (See accompanying
+# file LICENSE or copy at https://www.boost.org/LICENSE_1_0.txt)
 
 [package]
 name = "aci_ppm"
-version = "0.5.0"
+version = "0.7.0"
 authors = [
 	"Jeron A. Lau <jeron.lau@plopgrizzly.com>"
 ]
-
-license = "MIT"
+license = "BSL-1.0"
 documentation = "https://docs.rs/aci_ppm"
-homepage = "http://plopgrizzly.com/aci_ppm"
-repository = "https://github.com/plopgrizzly/aci_ppm"
-
+homepage = "https://gitlab.com/plopgrizzly/multimedia"
+repository = "https://gitlab.com/plopgrizzly/multimedia/aci_ppm"
 readme = "README.md"
-description = "Encode(TODO) and decode ppm image files."
+description = "Encode and decode PNM image files (TODO: so far only PPM)."
 keywords = ["Image","PPM","Codec","Parse"]
 categories = ["data-structures","encoding","parsing","parser-implementations"]
 
-exclude = [
-	"examples/*", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", ".gitignore",
-	"_config.yml", "ISSUE_TEMPLATE.md"
-]
-
 [dependencies]
-afi = "^0.5"
-byteorder = "^1.2.2"
+afi = "0.7"
+byteorder = "1.2"
+
+[dev-dependencies]
+aci_png = "0.7"
